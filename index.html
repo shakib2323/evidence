@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet"/>
+<title>ER Shakib — Evidence Vault</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- SHA-256 implementation (pure JS, no server needed) -->
+<script>
+!function(){function n(n,t){return n>>>t|n<<32-t}function t(n,t,r){return n&t^~n&r}function r(n,t,r){return n&t^n&r^t&r}function e(t){return n(t,2)^n(t,13)^n(t,22)}function o(t){return n(t,6)^n(t,11)^n(t,25)}function u(t){return n(t,7)^n(t,18)^t>>>3}function c(t){return n(t,17)^n(t,19)^t>>>10}function i(n){for(var t=[],r=0;r<n.length;r+=4)t.push(n[r]<<24|n[r+1]<<16|n[r+2]<<8|n[r+3]);return t}var f=[1116352408,1899447441,3049323471,3921009573,961987163,1508970993,2453635748,2870763221,3624381080,310598401,607225278,1426881987,1925078388,2162078206,2614888103,3248222580,3835390401,4022224774,264347078,604807628,770255983,1249150122,1555081692,1996064986,2554220882,2821834349,2952996808,3210313671,3336571891,3584528711,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,2177026350,2456956037,2730485921,2820302411,3259730800,3345764771,3516065817,3600352804,4094571909,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,2227730452,2361852424,2428436474,2756734187,3204031479,3329325298];window._sha256=function(n){for(var t=function(n){for(var t=[],r=0;r<n.length;r++)t.push(n.charCodeAt(r));return t}(n),r=t.length,e=8*r,o=[],a=0;a<r;a++)o[a>>2]|=t[a]<<24-(a%4)*8;o[r>>2]|=128<<24-(r%4)*8;o[14+(15&(r+64>>6<<4))]=Math.floor(e/4294967296),o[15+(15&(r+64>>6<<4))]=e;for(var s=[1779033703,3144134277,1013904242,2773480762,1359893119,2600822924,528734635,1541325730],h=new Array(64),p=0;p<o.length;p+=16){var l=s[0],v=s[1],g=s[2],y=s[3],A=s[4],b=s[5],d=s[6],w=s[7];for(a=0;a<64;a++){h[a]=a<16?o[p+a]||0:c(h[a-2])+h[a-7]+u(h[a-15])+h[a-16]|0;var _=w+o(A)+t(A,b,d)+f[a]+h[a]|0,x=e(l)+r(l,v,g)|0;w=d,d=b,b=A,A=y+_|0,y=g,g=v,v=l,l=_+x|0}s[0]=s[0]+l|0,s[1]=s[1]+v|0,s[2]=s[2]+g|0,s[3]=s[3]+y|0,s[4]=s[4]+A|0,s[5]=s[5]+b|0,s[6]=s[6]+d|0,s[7]=s[7]+w|0}return s.map(function(n){return("00000000"+n.toString(16)).slice(-8)}).join("")}}();
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="blockedScreen">
+  <div class="b-icon">🔒</div>
+  <div class="b-title">Access Denied</div>
+  <div class="b-msg">Unauthorized access detected. This session has been terminated.</div>
+</div>
+
+<div id="loginScreen">
+  <div class="lcard">
+    <div class="llogo">ER</div>
+    <div class="lsub">Evidence Vault</div>
+    <div class="ldiv"></div>
+    <div class="ltitle">Secure Access</div>
+    <div class="ldesc">Authorized personnel only. All access attempts are logged.</div>
+    <input class="linput" id="lEmail" type="email" placeholder="Email address" autocomplete="off"/>
+    <input class="linput" id="lPass" type="password" placeholder="Password" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="lbtn" id="lBtn" onclick="doLogin()">Enter Vault</button>
+    <div class="lerr" id="lErr"></div>
+    <div class="linfo" id="lInfo"></div>
+    <div class="lockbox" id="lockBox">Too many attempts. Wait <span id="lockT">60</span>s</div>
+  </div>
+</div>
+
+<div id="qrPinModal">
+  <div class="pcard" id="pCard">
+    <div class="ptitle">QR Access PIN</div>
+    <div class="psub">Enter your 4-digit PIN to unlock QR sharing</div>
+    <div class="pdots">
+      <div class="pdot" id="d0"></div><div class="pdot" id="d1"></div>
+      <div class="pdot" id="d2"></div><div class="pdot" id="d3"></div>
+    </div>
+    <div class="perr" id="pErr"></div>
+    <div class="kpad">
+      <button class="kb" onclick="kp('1')">1</button><button class="kb" onclick="kp('2')">2</button><button class="kb" onclick="kp('3')">3</button>
+      <button class="kb" onclick="kp('4')">4</button><button class="kb" onclick="kp('5')">5</button><button class="kb" onclick="kp('6')">6</button>
+      <button class="kb" onclick="kp('7')">7</button><button class="kb" onclick="kp('8')">8</button><button class="kb" onclick="kp('9')">9</button>
+      <button class="kb kdel" onclick="kd()">DEL</button><button class="kb" onclick="kp('0')">0</button><button class="kb kok" onclick="checkPin()">OK</button>
+    </div>
+    <div class="patt" id="pAtt">3 attempts allowed</div>
+    <div style="margin-top:14px"><button class="btn btn-g" style="width:100%;font-size:12px" onclick="closePinModal()">Cancel</button></div>
+  </div>
+</div>
+
+<div id="appContent">
+<header>
+  <div class="logo">
+    <span class="logo-mark">ER</span>
+    <div>
+      <div style="font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--text)">Shakib</div>
+      <div class="logo-sub">Evidence Vault</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <span class="sec-badge">🔒 SECURED</span>
+    <button class="btn btn-g" onclick="exportAllPDF()">Export All PDF</button>
+    <button class="btn btn-p" onclick="document.getElementById('titleInput').focus()">+ New Note</button>
+    <button class="btn btn-d" onclick="doLogout()">Logout</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-tag"><div class="hero-dot"></div>TRUTH · HISTORY · WORLD</div>
+  <h1>Your <span>Evidence</span> Vault</h1>
+  <p>SHA-256 protected. No plain-text credentials. Firebase Auth + encrypted PIN verification.</p>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-num" id="totalNotes">0</span><span class="stat-label">Notes</span></div>
+    <div class="stat"><span class="stat-num" id="totalSources">0</span><span class="stat-label">Sources</span></div>
+    <div class="stat"><span class="stat-num" id="totalPDFs">0</span><span class="stat-label">PDFs</span></div>
+  </div>
+</div>
+
+<div class="status-bar">
+  <div class="status-dot" id="statusDot" style="background:var(--gold)"></div>
+  <span class="status-text" id="statusText">CONNECTING...</span>
+</div>
+
+<div class="main">
+  <div>
+    <div class="compose-card">
+      <div class="compose-hdr">
+        <span class="compose-title">Write Note / Evidence</span>
+        <span class="pdf-badge">PDF READY</span>
+      </div>
+      <div class="tag-row">
+        <div class="tag-pill tag-history" onclick="selTag('history',this)">History</div>
+        <div class="tag-pill tag-geopolitics" onclick="selTag('geopolitics',this)">Geopolitics</div>
+        <div class="tag-pill tag-conflict" onclick="selTag('conflict',this)">Conflict</div>
+        <div class="tag-pill tag-social" onclick="selTag('social',this)">Social</div>
+        <div class="tag-pill tag-evidence active" onclick="selTag('evidence',this)">Evidence</div>
+        <div class="tag-pill tag-nuclear" onclick="selTag('nuclear',this)">Nuclear</div>
+      </div>
+      <div class="compose-body">
+        <div class="form-group"><label class="form-label">Note Title</label><input id="titleInput" class="form-input" type="text" placeholder="e.g. CIA 1953 Iran Coup — Operation Ajax"></div>
+        <div class="form-group"><label class="form-label">Content / Evidence</label><textarea id="contentInput" class="form-input" placeholder="Write your evidence, research notes, or analysis here..." oninput="updateCC()"></textarea><div class="char-ct" id="charCt">0 characters</div></div>
+        <div class="form-group">
+          <label class="form-label">Sources (Enter to add)</label>
+          <div class="src-row"><input id="srcInput" class="form-input" type="text" placeholder="e.g. nsarchive.gwu.edu" onkeydown="if(event.key==='Enter'){event.preventDefault();addSrc();}"><button class="btn btn-g" onclick="addSrc()" style="padding:10px 14px;white-space:nowrap">Add</button></div>
+          <div id="srcTags" class="src-tags"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Attach PDF Evidence (optional)</label>
+          <div class="upload-zone"><input type="file" accept=".pdf" id="pdfFile" onchange="handlePDF()"><div class="upload-zone-text">Drop PDF here or <b>click to browse</b><br/><span style="font-size:11px;color:var(--text3)">Max 700 KB</span></div><div class="upload-prev" id="pdfPrev"></div></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Priority Level</label>
+          <div class="pri-row"><button class="pri-btn" id="p-high" onclick="setPri('high')">High Priority</button><button class="pri-btn sel-medium" id="p-medium" onclick="setPri('medium')">Medium</button><button class="pri-btn" id="p-low" onclick="setPri('low')">Low</button></div>
+        </div>
+      </div>
+      <div class="compose-ftr">
+        <button class="btn btn-g" onclick="clearForm()">Clear</button>
+        <button class="btn btn-p" id="saveBtn" onclick="saveNote()">Save to Vault</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="search-card">
+      <div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="searchInput" type="text" placeholder="Search notes..." oninput="renderNotes()"></div>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="setF('all',this)">All</button>
+        <button class="filter-tab" onclick="setF('history',this)">History</button>
+        <button class="filter-tab" onclick="setF('geopolitics',this)">Geo</button>
+        <button class="filter-tab" onclick="setF('conflict',this)">Conflict</button>
+        <button class="filter-tab" onclick="setF('evidence',this)">Evidence</button>
+        <button class="filter-tab" onclick="setF('high',this)">Urgent</button>
+      </div>
+    </div>
+    <div class="notes-sec-title">SAVED NOTES</div>
+    <div id="notesList" class="notes-list"><div class="empty-state"><div class="empty-state-icon">📋</div><p>No notes yet.</p></div></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="viewModal">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title" id="modalTitle">—</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="modal-meta" id="modalMeta"></div>
+      <div class="modal-ct" id="modalContent"></div>
+      <div class="modal-src-title">VERIFIED SOURCES</div>
+      <div class="modal-srcs" id="modalSrcs"></div>
+      <div id="modalPDF"></div>
+      <div class="qr-sec">
+        <div class="qr-lbl">SHARE VIA QR CODE</div>
+        <div id="qrcode-container"></div>
+        <div class="qr-url" id="qrUrl"></div>
+        <div class="modal-acts">
+          <button class="btn btn-p" id="dlQRBtn" onclick="requestQR()">Download QR</button>
+          <button class="btn btn-g" onclick="dlNotePDF()">Download PDF</button>
+          <button class="btn btn-g" onclick="copyLink()">Copy Link</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"><div class="toast-dot"></div><span id="toastMsg">Saved!</span></div>
+<script src="script.js"></script>
+</body>
+</html>
