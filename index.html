@@ -404,9 +404,8 @@ function _getNoteIdFromHash(){
 
 function blk(){if(_isQRView&&_isQRView())return;const b=document.getElementById('blockedScreen');if(b)b.style.display='flex';}
 
-// Domain lock
 (function(){
-  const OK=['file://','localhost','127.0.0.1','er-shakib','ershakib','github.io','netlify.app','vercel.app','evidence-com'];
+  const OK=['file://','localhost','127.0.0.1','er-shakib','ershakib','github.io','netlify.app','vercel.app','evidence-sepia'];
   if(!OK.some(o=>location.href.includes(o))&&location.protocol!=='file:'){
     document.body.innerHTML='<div style="background:#0a0202;height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:32px"><div style="font-size:64px">🔒</div><div style="font-family:Georgia,serif;font-size:28px;color:#E24B4A;font-weight:700">Unauthorized Domain</div><div style="font-size:14px;color:#5e5c56">This copy cannot run here.</div></div>';
   }
