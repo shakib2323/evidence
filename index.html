@@ -568,7 +568,7 @@ function updateCC(){const n=document.getElementById('contentInput').value.length
 function handlePDF(){
   const f=document.getElementById('pdfFile').files[0];if(!f)return;
   const kb=f.size/1024,mb=kb/1024,pr=document.getElementById('pdfPrev');
-  if(mb>0.7){pr.textContent='⚠ Too large. Max 700KB.';pr.style.color='var(--red)';pdfFile=null;return;}
+  if(mb>1024){pr.textContent='⚠ Too large. Max 1024.';pr.style.color='var(--red)';pdfFile=null;return;}
   pdfFile=f;pr.textContent='✓ '+f.name+' ('+kb.toFixed(1)+'KB)';pr.style.color='var(--teal)';
 }
 
