@@ -5,37 +5,77 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet"/>
 <title>ER Shakib — Evidence Vault</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-<!-- SHA-256 implementation (pure JS, no server needed) -->
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<!-- Firebase (deferred non-blocking) -->
+<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+<!-- CodeMirror for syntax highlighting editor -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css"/>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/shell/shell.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+
+<!-- Highlight.js for reading view -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<!-- PDF + QR -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- SHA-256 -->
 <script>
-!function(){function n(n,t){return n>>>t|n<<32-t}function t(n,t,r){return n&t^~n&r}function r(n,t,r){return n&t^n&r^t&r}function e(t){return n(t,2)^n(t,13)^n(t,22)}function o(t){return n(t,6)^n(t,11)^n(t,25)}function u(t){return n(t,7)^n(t,18)^t>>>3}function c(t){return n(t,17)^n(t,19)^t>>>10}function i(n){for(var t=[],r=0;r<n.length;r+=4)t.push(n[r]<<24|n[r+1]<<16|n[r+2]<<8|n[r+3]);return t}var f=[1116352408,1899447441,3049323471,3921009573,961987163,1508970993,2453635748,2870763221,3624381080,310598401,607225278,1426881987,1925078388,2162078206,2614888103,3248222580,3835390401,4022224774,264347078,604807628,770255983,1249150122,1555081692,1996064986,2554220882,2821834349,2952996808,3210313671,3336571891,3584528711,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,2177026350,2456956037,2730485921,2820302411,3259730800,3345764771,3516065817,3600352804,4094571909,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,2227730452,2361852424,2428436474,2756734187,3204031479,3329325298];window._sha256=function(n){for(var t=function(n){for(var t=[],r=0;r<n.length;r++)t.push(n.charCodeAt(r));return t}(n),r=t.length,e=8*r,o=[],a=0;a<r;a++)o[a>>2]|=t[a]<<24-(a%4)*8;o[r>>2]|=128<<24-(r%4)*8;o[14+(15&(r+64>>6<<4))]=Math.floor(e/4294967296),o[15+(15&(r+64>>6<<4))]=e;for(var s=[1779033703,3144134277,1013904242,2773480762,1359893119,2600822924,528734635,1541325730],h=new Array(64),p=0;p<o.length;p+=16){var l=s[0],v=s[1],g=s[2],y=s[3],A=s[4],b=s[5],d=s[6],w=s[7];for(a=0;a<64;a++){h[a]=a<16?o[p+a]||0:c(h[a-2])+h[a-7]+u(h[a-15])+h[a-16]|0;var _=w+o(A)+t(A,b,d)+f[a]+h[a]|0,x=e(l)+r(l,v,g)|0;w=d,d=b,b=A,A=y+_|0,y=g,g=v,v=l,l=_+x|0}s[0]=s[0]+l|0,s[1]=s[1]+v|0,s[2]=s[2]+g|0,s[3]=s[3]+y|0,s[4]=s[4]+A|0,s[5]=s[5]+b|0,s[6]=s[6]+d|0,s[7]=s[7]+w|0}return s.map(function(n){return("00000000"+n.toString(16)).slice(-8)}).join("")}}();
+!function(){function n(n,t){return n>>>t|n<<32-t}function t(n,t,r){return n&t^~n&r}function r(n,t,r){return n&t^n&r^t&r}function e(t){return n(t,2)^n(t,13)^n(t,22)}function o(t){return n(t,6)^n(t,11)^n(t,25)}function u(t){return n(t,7)^n(t,18)^t>>>3}function c(t){return n(t,17)^n(t,19)^t>>>10}var f=[1116352408,1899447441,3049323471,3921009573,961987163,1508970993,2453635748,2870763221,3624381080,310598401,607225278,1426881987,1925078388,2162078206,2614888103,3248222580,3835390401,4022224774,264347078,604807628,770255983,1249150122,1555081692,1996064986,2554220882,2821834349,2952996808,3210313671,3336571891,3584528711,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,2177026350,2456956037,2730485921,2820302411,3259730800,3345764771,3516065817,3600352804,4094571909,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,2227730452,2361852424,2428436474,2756734187,3204031479,3329325298];window._sha256=function(n){for(var t=function(n){for(var t=[],r=0;r<n.length;r++)t.push(n.charCodeAt(r));return t}(n),r=t.length,e=8*r,o=[],a=0;a<r;a++)o[a>>2]|=t[a]<<24-(a%4)*8;o[r>>2]|=128<<24-(r%4)*8;o[14+(15&(r+64>>6<<4))]=Math.floor(e/4294967296),o[15+(15&(r+64>>6<<4))]=e;for(var s=[1779033703,3144134277,1013904242,2773480762,1359893119,2600822924,528734635,1541325730],h=new Array(64),p=0;p<o.length;p+=16){var l=s[0],v=s[1],g=s[2],y=s[3],A=s[4],b=s[5],d=s[6],w=s[7];for(a=0;a<64;a++){h[a]=a<16?o[p+a]||0:c(h[a-2])+h[a-7]+u(h[a-15])+h[a-16]|0;var _=w+o(A)+t(A,b,d)+f[a]+h[a]|0,x=e(l)+r(l,v,g)|0;w=d,d=b,b=A,A=y+_|0,y=g,g=v,v=l,l=_+x|0}s[0]=s[0]+l|0,s[1]=s[1]+v|0,s[2]=s[2]+g|0,s[3]=s[3]+y|0,s[4]=s[4]+A|0,s[5]=s[5]+b|0,s[6]=s[6]+d|0,s[7]=s[7]+w|0}return s.map(function(n){return("00000000"+n.toString(16)).slice(-8)}).join("")}}();
 </script>
 
 <style>
-*{-webkit-user-select:none!important;-moz-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important;}
-input,textarea{-webkit-user-select:text!important;-moz-user-select:text!important;user-select:text!important;}
-:root{--gold:#EF9F27;--bg:#0d0d0b;--bg2:#141412;--bg3:#1c1c19;--bg4:#242420;--border:#2e2e2a;--text:#f0ede4;--text2:#a09d94;--text3:#5e5c56;--teal:#1D9E75;--red:#E24B4A;--purple:#7F77DD;--coral:#D85A30;--green:#639922;--font-d:'Playfair Display',Georgia,serif;--font-m:'DM Mono',monospace;--font-b:'DM Sans',sans-serif;--r:10px;}
+/* ── GLOBAL RESET & VARS ── */
+:root{
+  --gold:#EF9F27;--bg:#0d0d0b;--bg2:#141412;--bg3:#1c1c19;--bg4:#242420;
+  --border:#2e2e2a;--text:#f0ede4;--text2:#a09d94;--text3:#5e5c56;
+  --teal:#1D9E75;--red:#E24B4A;--purple:#7F77DD;--coral:#D85A30;--green:#639922;
+  --font-d:'Playfair Display',Georgia,serif;
+  --font-m:'JetBrains Mono',monospace;
+  --font-b:'DM Sans',sans-serif;
+  --r:10px;
+  /* syntax colors */
+  --syn-keyword:#ff79c6;--syn-string:#f1fa8c;--syn-number:#bd93f9;
+  --syn-comment:#6272a4;--syn-func:#50fa7b;--syn-tag:#ff5555;
+  --syn-attr:#8be9fd;--syn-op:#ff79c6;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.3;pointer-events:none;z-index:0;}
+*{-webkit-user-select:none!important;-moz-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important;}
+input,textarea,.CodeMirror{-webkit-user-select:text!important;-moz-user-select:text!important;user-select:text!important;}
+body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.18;pointer-events:none;z-index:0;will-change:transform;}
+
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
+/* ── BLOCKED SCREEN ── */
 #blockedScreen{position:fixed;inset:0;background:#0a0202;z-index:99999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:32px;}
-.b-icon{font-size:64px;}
-.b-title{font-family:var(--font-d);font-size:28px;color:var(--red);font-weight:700;}
-.b-msg{font-size:14px;color:var(--text3);max-width:400px;line-height:1.7;}
+.b-icon{font-size:64px;}.b-title{font-family:var(--font-d);font-size:28px;color:var(--red);font-weight:700;}.b-msg{font-size:14px;color:var(--text3);max-width:400px;line-height:1.7;}
 
+/* ── LOGIN SCREEN ── */
 #loginScreen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;}
-#loginScreen::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.3;}
+#loginScreen::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.18;}
 .lcard{position:relative;z-index:1;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:48px 40px 40px;width:100%;max-width:400px;text-align:center;animation:fadeIn .4s ease;}
 .llogo{font-family:var(--font-d);font-size:64px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:4px;}
 .lsub{font-family:var(--font-m);font-size:10px;letter-spacing:4px;color:var(--text3);text-transform:uppercase;margin-bottom:8px;}
@@ -50,6 +90,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .linfo{font-family:var(--font-m);font-size:10px;color:var(--text3);margin-top:10px;}
 .lockbox{background:rgba(226,75,74,.1);border:1px solid rgba(226,75,74,.3);border-radius:8px;padding:12px;font-size:12px;color:var(--red);margin-top:12px;display:none;}
 
+/* ── PIN MODAL ── */
 #qrPinModal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);}
 #qrPinModal.open{display:flex;}
 .pcard{background:var(--bg2);border:1px solid var(--gold);border-radius:14px;padding:36px 32px 28px;width:100%;max-width:340px;text-align:center;animation:fadeIn .3s ease;}
@@ -67,8 +108,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .kb.kok{background:var(--gold);color:#0d0d0b;border-color:var(--gold);font-size:13px;font-weight:600;}.kb.kok:hover{background:#f5b040;}
 .patt{font-family:var(--font-m);font-size:10px;color:var(--text3);}
 
+/* ── APP LAYOUT ── */
 #appContent{display:none;}
-header{position:sticky;top:0;z-index:100;background:rgba(13,13,11,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+header{position:sticky;top:0;z-index:100;background:rgba(13,13,11,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;}
 .logo{display:flex;align-items:center;gap:12px;}
 .logo-mark{font-family:var(--font-d);font-size:22px;font-weight:900;color:var(--gold);}
 .logo-sub{font-family:var(--font-m);font-size:10px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;}
@@ -78,6 +120,8 @@ header{position:sticky;top:0;z-index:100;background:rgba(13,13,11,.92);backdrop-
 .btn-g{background:transparent;color:var(--text2);border:1px solid var(--border);}.btn-g:hover{border-color:var(--gold);color:var(--gold);}
 .btn-d{background:rgba(226,75,74,.12);color:var(--red);border:1px solid rgba(226,75,74,.3);font-size:12px;padding:8px 14px;}.btn-d:hover{background:rgba(226,75,74,.22);}
 .sec-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(29,158,117,.1);border:1px solid rgba(29,158,117,.25);border-radius:100px;padding:4px 12px;font-family:var(--font-m);font-size:10px;color:var(--teal);letter-spacing:1px;}
+
+/* ── HERO ── */
 .hero{position:relative;z-index:1;padding:64px 32px 48px;max-width:1200px;margin:0 auto;}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(239,159,39,.1);border:1px solid rgba(239,159,39,.25);border-radius:100px;padding:6px 14px;font-family:var(--font-m);font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:20px;}
 .hero-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
@@ -88,37 +132,75 @@ header{position:sticky;top:0;z-index:100;background:rgba(13,13,11,.92);backdrop-
 .stat{display:flex;flex-direction:column;}
 .stat-num{font-family:var(--font-d);font-size:28px;font-weight:700;color:var(--gold);}
 .stat-label{font-size:12px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;}
+
+/* ── MAIN GRID ── */
 .main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 32px 80px;display:grid;grid-template-columns:1fr 380px;gap:32px;}
 @media(max-width:900px){.main{grid-template-columns:1fr;}}
+
+/* ── COMPOSE CARD ── */
 .compose-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
 .compose-hdr{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .compose-title{font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--text);}
 .tag-row{display:flex;gap:8px;flex-wrap:wrap;padding:16px 24px;border-bottom:1px solid var(--border);}
 .tag-pill{padding:5px 12px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid transparent;transition:all .15s;}
 .tag-pill:hover{opacity:.8;}.tag-pill.active{border-color:currentColor;}
-.tag-history{background:rgba(239,159,39,.12);color:#EF9F27;}.tag-geopolitics{background:rgba(127,119,221,.12);color:#7F77DD;}.tag-conflict{background:rgba(216,90,48,.12);color:#D85A30;}.tag-social{background:rgba(29,158,117,.12);color:#1D9E75;}.tag-evidence{background:rgba(99,153,34,.12);color:#639922;}.tag-nuclear{background:rgba(226,75,74,.12);color:#E24B4A;}
+.tag-history{background:rgba(239,159,39,.12);color:#EF9F27;}
+.tag-geopolitics{background:rgba(127,119,221,.12);color:#7F77DD;}
+.tag-conflict{background:rgba(216,90,48,.12);color:#D85A30;}
+.tag-social{background:rgba(29,158,117,.12);color:#1D9E75;}
+.tag-evidence{background:rgba(99,153,34,.12);color:#639922;}
+.tag-nuclear{background:rgba(226,75,74,.12);color:#E24B4A;}
 .compose-body{padding:20px 24px;}
 .form-group{margin-bottom:16px;}
-.form-label{display:block;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.form-label{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
 .form-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:var(--font-b);font-size:14px;color:var(--text);outline:none;transition:border-color .2s;-webkit-user-select:text!important;user-select:text!important;}
 .form-input:focus{border-color:var(--gold);}.form-input::placeholder{color:var(--text3);}
-textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
+
+/* ── EDITOR MODE TOGGLE ── */
+.editor-toggle{display:flex;gap:4px;background:var(--bg4);border-radius:6px;padding:3px;}
+.etog-btn{padding:4px 10px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s;font-family:var(--font-m);}
+.etog-btn.active{background:var(--bg2);color:var(--gold);border:1px solid var(--border);}
+
+/* ── CODEMIRROR CUSTOM ── */
+.CodeMirror{font-family:var(--font-m)!important;font-size:13.5px!important;line-height:1.7!important;border-radius:8px!important;border:1px solid var(--border)!important;background:var(--bg3)!important;color:#f8f8f2!important;min-height:200px;transition:border-color .2s;}
+.CodeMirror-focused{border-color:var(--gold)!important;}
+.CodeMirror-scroll{min-height:200px;}
+.CodeMirror-gutters{background:var(--bg4)!important;border-right:1px solid var(--border)!important;}
+.CodeMirror-linenumber{color:var(--text3)!important;font-size:11px!important;}
+.CodeMirror-cursor{border-left:2px solid var(--gold)!important;}
+.CodeMirror-selected{background:rgba(239,159,39,.15)!important;}
+/* Plain textarea fallback */
+textarea.form-input.plain-area{resize:vertical;min-height:200px;line-height:1.7;font-family:var(--font-m);font-size:13.5px;}
+
+/* ── LANG SELECTOR ── */
+.lang-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.lang-btn{padding:3px 9px;border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg4);color:var(--text3);transition:all .12s;font-family:var(--font-m);}
+.lang-btn:hover,.lang-btn.active{background:rgba(239,159,39,.15);border-color:var(--gold);color:var(--gold);}
+.char-ct{font-family:var(--font-m);font-size:11px;color:var(--text3);text-align:right;margin-top:6px;}
+
+/* ── SOURCES ── */
 .src-row{display:flex;gap:8px;}.src-row .form-input{flex:1;}
 .src-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
 .src-tag{display:inline-flex;align-items:center;gap:6px;background:var(--bg4);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-family:var(--font-m);font-size:11px;color:var(--teal);}
 .src-tag button{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;line-height:1;padding:0;}.src-tag button:hover{color:var(--red);}
+
+/* ── PRIORITY ── */
 .pri-row{display:flex;gap:8px;}
 .pri-btn{flex:1;padding:8px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--text2);transition:all .15s;}
 .pri-btn.sel-high{background:rgba(226,75,74,.15);border-color:var(--red);color:var(--red);}
 .pri-btn.sel-medium{background:rgba(239,159,39,.15);border-color:var(--gold);color:var(--gold);}
 .pri-btn.sel-low{background:rgba(29,158,117,.15);border-color:var(--teal);color:var(--teal);}
-.compose-ftr{padding:16px 24px;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;}
-.char-ct{font-family:var(--font-m);font-size:11px;color:var(--text3);margin-left:auto;}
+
+/* ── UPLOAD ── */
 .upload-zone{border:1.5px dashed var(--border);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
 .upload-zone:hover{border-color:var(--gold);background:rgba(239,159,39,.04);}
 .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;}
 .upload-zone-text{font-size:13px;color:var(--text3);}.upload-zone-text b{color:var(--gold);}
 .upload-prev{font-size:12px;margin-top:8px;font-family:var(--font-m);}
+.compose-ftr{padding:16px 24px;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.pdf-badge{display:inline-flex;align-items:center;background:rgba(226,75,74,.12);border:1px solid rgba(226,75,74,.3);border-radius:5px;padding:2px 8px;font-size:10px;font-weight:600;color:var(--red);letter-spacing:1px;}
+
+/* ── SIDEBAR / NOTES ── */
 .sidebar{display:flex;flex-direction:column;gap:20px;}
 .search-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;}
 .search-wrap{position:relative;}
@@ -129,8 +211,8 @@ textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
 .filter-tab{padding:4px 10px;border-radius:100px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text3);transition:all .15s;}
 .filter-tab.active{background:var(--gold);color:#0d0d0b;border-color:var(--gold);}
 .notes-sec-title{font-family:var(--font-m);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);padding:0 4px;margin-top:4px;}
-.notes-list{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
-.note-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.notes-list{display:flex;flex-direction:column;gap:10px;margin-top:8px;contain:layout;}
+.note-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:border-color .15s,transform .15s;position:relative;overflow:hidden;animation:slideUp .25s ease both;will-change:transform;}
 .note-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
 .note-card.priority-high::before{background:var(--red);}
 .note-card.priority-medium::before{background:var(--gold);}
@@ -139,64 +221,101 @@ textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
 .note-card-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;}
 .note-card-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;flex:1;}
 .note-card-tag{font-size:10px;padding:2px 8px;border-radius:100px;font-weight:500;white-space:nowrap;}
-.note-card-body{font-size:12px;color:var(--text2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px;}
+.note-card-body{font-size:12px;color:var(--text2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px;font-family:var(--font-m);}
 .note-card-ftr{display:flex;align-items:center;justify-content:space-between;}
 .note-card-date{font-family:var(--font-m);font-size:10px;color:var(--text3);}
 .note-card-acts{display:flex;gap:6px;}
 .icon-btn{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text2);transition:all .15s;font-family:var(--font-b);}
 .icon-btn:hover{border-color:var(--gold);color:var(--gold);}
 .icon-btn.del:hover{border-color:var(--red);color:var(--red);}
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s;}
+.has-pdf{font-size:11px;color:var(--red);font-family:var(--font-m);margin-top:4px;}
+.has-code{font-size:11px;color:var(--syn-func);font-family:var(--font-m);margin-top:2px;}
+
+/* ── MODAL ── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .2s;}
 .modal-ov.open{opacity:1;pointer-events:all;}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:14px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;transform:translateY(24px);transition:transform .3s;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:14px;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;transform:translateY(20px);transition:transform .25s;}
 .modal-ov.open .modal{transform:translateY(0);}
-.modal-hdr{padding:24px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+.modal-hdr{padding:24px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:sticky;top:0;background:var(--bg2);z-index:10;}
 .modal-title{font-family:var(--font-d);font-size:22px;font-weight:700;color:var(--text);line-height:1.3;}
 .modal-close{background:var(--bg3);border:1px solid var(--border);border-radius:6px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:18px;flex-shrink:0;transition:all .15s;}
 .modal-close:hover{border-color:var(--red);color:var(--red);}
 .modal-body{padding:24px 28px;}
 .modal-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
 .meta-badge{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:500;}
-.modal-ct{font-size:14px;color:var(--text);line-height:1.8;white-space:pre-wrap;background:var(--bg3);border-radius:8px;padding:16px;margin-bottom:16px;border:1px solid var(--border);font-family:var(--font-m);}
+
+/* ── COLORFUL CONTENT RENDERER ── */
+.modal-ct{font-size:13.5px;color:var(--text);line-height:1.85;background:var(--bg3);border-radius:8px;padding:20px;margin-bottom:16px;border:1px solid var(--border);font-family:var(--font-m);}
+/* Code blocks within content */
+.modal-ct pre{margin:12px 0;border-radius:6px;overflow:hidden;}
+.modal-ct pre code{display:block;padding:14px 16px;font-size:12.5px;line-height:1.7;overflow-x:auto;background:var(--bg4);border:1px solid var(--border);border-radius:6px;-webkit-user-select:text!important;user-select:text!important;}
+/* Inline code */
+.modal-ct code:not(pre code){background:rgba(139,233,253,.1);color:var(--syn-attr);padding:2px 6px;border-radius:4px;font-size:12px;}
+/* Keywords in plain text */
+.kw-highlight{color:var(--syn-keyword);}
+.num-highlight{color:var(--syn-number);}
+.str-highlight{color:var(--syn-string);}
+/* HLjs theme overrides */
+.hljs{background:transparent!important;}
+/* Content text colors by section type */
+.content-segment{margin-bottom:4px;}
+.content-segment.is-code-block{margin:10px 0;}
+
 .modal-src-title{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
 .modal-srcs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
 .modal-src-pill{font-family:var(--font-m);font-size:11px;padding:4px 10px;background:rgba(29,158,117,.12);border:1px solid rgba(29,158,117,.3);border-radius:6px;color:var(--teal);}
+
+/* ── QR SECTION ── */
 .qr-sec{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;}
 .qr-lbl{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:16px;}
 #qrcode-container{display:flex;justify-content:center;margin-bottom:16px;}
 #qrcode-container canvas,#qrcode-container img{border-radius:8px;border:3px solid var(--gold);padding:8px;background:white;}
 .qr-url{font-family:var(--font-m);font-size:10px;color:var(--text3);word-break:break-all;margin-bottom:14px;}
 .modal-acts{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* ── TOAST ── */
 .toast{position:fixed;bottom:32px;right:32px;background:var(--bg3);border:1px solid var(--gold);border-radius:8px;padding:12px 20px;font-size:13px;color:var(--text);z-index:500;display:flex;align-items:center;gap:10px;transform:translateY(80px);opacity:0;transition:all .3s;max-width:320px;}
 .toast.show{transform:translateY(0);opacity:1;}
 .toast-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;}
-.empty-state{text-align:center;padding:48px 24px;color:var(--text3);}
-.empty-state-icon{font-size:40px;margin-bottom:12px;}
-.empty-state p{font-size:13px;line-height:1.6;}
-.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;}
-::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* ── STATUS BAR ── */
 .status-bar{position:relative;z-index:1;max-width:1200px;margin:0 auto 24px;padding:0 32px;display:flex;align-items:center;gap:16px;}
 .status-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite;}
 .status-text{font-family:var(--font-m);font-size:11px;color:var(--text3);letter-spacing:1px;}
-.pdf-badge{display:inline-flex;align-items:center;background:rgba(226,75,74,.12);border:1px solid rgba(226,75,74,.3);border-radius:5px;padding:2px 8px;font-size:10px;font-weight:600;color:var(--red);letter-spacing:1px;}
-.has-pdf{font-size:11px;color:var(--red);font-family:var(--font-m);margin-top:4px;}
 
-/* ── PUBLIC QR VIEW ── */
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:48px 24px;color:var(--text3);}
+.empty-state-icon{font-size:40px;margin-bottom:12px;}
+.empty-state p{font-size:13px;line-height:1.6;}
+
+/* ── SPINNER ── */
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--text3);}
+
+/* ── PUBLIC VIEW ── */
 #publicView{display:none;position:fixed;inset:0;z-index:8000;background:var(--bg);overflow-y:auto;}
-#publicView::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.3;pointer-events:none;z-index:0;}
-.pub-wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:40px 24px 80px;}
+#publicView::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.18;pointer-events:none;z-index:0;}
+.pub-wrap{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:40px 24px 80px;}
 .pub-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid var(--border);}
 .pub-logo{font-family:var(--font-d);font-size:28px;font-weight:900;color:var(--gold);}
 .pub-logo-sub{font-family:var(--font-m);font-size:9px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;margin-top:2px;}
 .pub-readonly-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(226,75,74,.1);border:1px solid rgba(226,75,74,.3);border-radius:100px;padding:5px 14px;font-family:var(--font-m);font-size:10px;color:var(--red);letter-spacing:1px;}
 .pub-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px;}
-.pub-card-top{padding:4px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.pub-card-top{padding:12px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
 .pub-tag-badge{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:500;}
 .pub-pri-badge{font-family:var(--font-m);font-size:10px;color:var(--text3);}
 .pub-date{font-family:var(--font-m);font-size:10px;color:var(--text3);margin-left:auto;}
 .pub-title{font-family:var(--font-d);font-size:26px;font-weight:700;color:var(--text);padding:24px 24px 8px;line-height:1.2;}
-.pub-content{font-size:14px;color:var(--text2);line-height:1.85;padding:8px 24px 20px;white-space:pre-wrap;font-family:var(--font-m);}
-.pub-sources-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);padding:0 24px 10px;border-top:1px solid var(--border);padding-top:16px;}
+.pub-content{font-size:14px;color:var(--text2);line-height:1.9;padding:8px 24px 20px;font-family:var(--font-m);}
+.pub-content pre{margin:12px 0;border-radius:6px;overflow:hidden;}
+.pub-content pre code{display:block;padding:14px 16px;font-size:12px;line-height:1.7;overflow-x:auto;background:var(--bg4);border:1px solid var(--border);border-radius:6px;}
+.pub-content code:not(pre code){background:rgba(139,233,253,.1);color:var(--syn-attr);padding:2px 6px;border-radius:4px;}
+.pub-sources-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);padding:16px 24px 10px;border-top:1px solid var(--border);}
 .pub-sources{display:flex;flex-wrap:wrap;gap:6px;padding:0 24px 20px;}
 .pub-src-pill{font-family:var(--font-m);font-size:11px;padding:4px 12px;background:rgba(29,158,117,.1);border:1px solid rgba(29,158,117,.25);border-radius:6px;color:var(--teal);}
 .pub-pdf-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(226,75,74,.1);border:1px solid rgba(226,75,74,.3);border-radius:8px;padding:10px 18px;color:var(--red);text-decoration:none;font-size:13px;font-weight:500;margin:0 24px 20px;}
@@ -215,12 +334,14 @@ textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
 </head>
 <body>
 
+<!-- BLOCKED -->
 <div id="blockedScreen">
   <div class="b-icon">🔒</div>
   <div class="b-title">Access Denied</div>
   <div class="b-msg">Unauthorized access detected. This session has been terminated.</div>
 </div>
 
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="lcard">
     <div class="llogo">ER</div>
@@ -237,6 +358,7 @@ textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
   </div>
 </div>
 
+<!-- PIN MODAL -->
 <div id="qrPinModal">
   <div class="pcard" id="pCard">
     <div class="ptitle">QR Access PIN</div>
@@ -257,6 +379,7 @@ textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
   </div>
 </div>
 
+<!-- APP -->
 <div id="appContent">
 <header>
   <div class="logo">
@@ -277,7 +400,7 @@ textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
 <div class="hero">
   <div class="hero-tag"><div class="hero-dot"></div>TRUTH · HISTORY · WORLD</div>
   <h1>Your <span>Evidence</span> Vault</h1>
-  <p>SHA-256 protected. No plain-text credentials. Firebase Auth + encrypted PIN verification.</p>
+  <p>SHA-256 protected. Firebase Auth + encrypted PIN. Syntax-highlighted code editor for all languages.</p>
   <div class="stats-row">
     <div class="stat"><span class="stat-num" id="totalNotes">0</span><span class="stat-label">Notes</span></div>
     <div class="stat"><span class="stat-num" id="totalSources">0</span><span class="stat-label">Sources</span></div>
@@ -306,16 +429,44 @@ textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
         <div class="tag-pill tag-nuclear" onclick="selTag('nuclear',this)">Nuclear</div>
       </div>
       <div class="compose-body">
-        <div class="form-group"><label class="form-label">Note Title</label><input id="titleInput" class="form-input" type="text" placeholder="e.g. CIA 1953 Iran Coup — Operation Ajax"></div>
-        <div class="form-group"><label class="form-label">Content / Evidence</label><textarea id="contentInput" class="form-input" placeholder="Write your evidence, research notes, or analysis here..." oninput="updateCC()"></textarea><div class="char-ct" id="charCt">0 characters</div></div>
         <div class="form-group">
-          <label class="form-label">Sources (Enter to add)</label>
+          <label class="form-label">Note Title</label>
+          <input id="titleInput" class="form-input" type="text" placeholder="e.g. CIA 1953 Iran Coup — Operation Ajax"/>
+        </div>
+        <div class="form-group">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <label class="form-label" style="margin-bottom:0">Content / Evidence</label>
+            <div class="editor-toggle">
+              <button class="etog-btn active" id="togText" onclick="switchMode('text')">TEXT</button>
+              <button class="etog-btn" id="togCode" onclick="switchMode('code')">CODE</button>
+            </div>
+          </div>
+          <!-- LANG SELECTOR (visible in code mode) -->
+          <div class="lang-row" id="langRow" style="display:none;">
+             <button class="lang-btn" data-lang="Java" onclick="setLang('java',this)">Java</button>
+            <button class="lang-btn active" data-lang="javascript" onclick="setLang('javascript',this)">JS</button>
+            <button class="lang-btn" data-lang="python" onclick="setLang('python',this)">Python</button>
+            <button class="lang-btn" data-lang="htmlmixed" onclick="setLang('htmlmixed',this)">HTML</button>
+            <button class="lang-btn" data-lang="css" onclick="setLang('css',this)">CSS</button>
+            <button class="lang-btn" data-lang="text/x-csrc" onclick="setLang('text/x-csrc',this)">C/C++</button>
+            <button class="lang-btn" data-lang="shell" onclick="setLang('shell',this)">Shell</button>
+            <button class="lang-btn" data-lang="sql" onclick="setLang('sql',this)">SQL</button>
+            <button class="lang-btn" data-lang="" onclick="setLang('',this)">Plain</button>
+          </div>
+          <!-- Plain textarea (text mode) -->
+          <textarea id="contentInput" class="form-input plain-area" placeholder="Write your evidence, research notes, or analysis here... You can paste code in CODE mode for syntax highlighting." oninput="updateCC()"></textarea>
+          <!-- CodeMirror container (code mode) -->
+          <div id="cmContainer" style="display:none;"></div>
+          <div class="char-ct" id="charCt">0 characters</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sources <span style="font-size:9px;opacity:.6">(Enter to add)</span></label>
           <div class="src-row"><input id="srcInput" class="form-input" type="text" placeholder="e.g. nsarchive.gwu.edu" onkeydown="if(event.key==='Enter'){event.preventDefault();addSrc();}"><button class="btn btn-g" onclick="addSrc()" style="padding:10px 14px;white-space:nowrap">Add</button></div>
           <div id="srcTags" class="src-tags"></div>
         </div>
         <div class="form-group">
-          <label class="form-label">Attach PDF Evidence (optional)</label>
-          <div class="upload-zone"><input type="file" accept=".pdf" id="pdfFile" onchange="handlePDF()"><div class="upload-zone-text">Drop PDF here or <b>click to browse</b><br/><span style="font-size:11px;color:var(--text3)">Max 700 KB</span></div><div class="upload-prev" id="pdfPrev"></div></div>
+          <label class="form-label">Attach PDF Evidence <span style="font-size:9px;opacity:.6">(optional, max 1MB)</span></label>
+          <div class="upload-zone"><input type="file" accept=".pdf" id="pdfFile" onchange="handlePDF()"><div class="upload-zone-text">Drop PDF here or <b>click to browse</b></div><div class="upload-prev" id="pdfPrev"></div></div>
         </div>
         <div class="form-group">
           <label class="form-label">Priority Level</label>
@@ -331,7 +482,7 @@ textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
 
   <div class="sidebar">
     <div class="search-card">
-      <div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="searchInput" type="text" placeholder="Search notes..." oninput="renderNotes()"></div>
+      <div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="searchInput" type="text" placeholder="Search notes..." oninput="debounceRender()"></div>
       <div class="filter-tabs">
         <button class="filter-tab active" onclick="setF('all',this)">All</button>
         <button class="filter-tab" onclick="setF('history',this)">History</button>
@@ -346,9 +497,13 @@ textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
   </div>
 </div>
 
+<!-- VIEW MODAL -->
 <div class="modal-ov" id="viewModal">
   <div class="modal">
-    <div class="modal-hdr"><div class="modal-title" id="modalTitle">—</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-hdr">
+      <div class="modal-title" id="modalTitle">—</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
     <div class="modal-body">
       <div class="modal-meta" id="modalMeta"></div>
       <div class="modal-ct" id="modalContent"></div>
@@ -370,17 +525,39 @@ textarea.form-input{resize:vertical;min-height:160px;line-height:1.7;}
 </div>
 </div>
 
+<!-- TOAST -->
 <div class="toast" id="toast"><div class="toast-dot"></div><span id="toastMsg">Saved!</span></div>
 
+<!-- PUBLIC VIEW -->
+<div id="publicView">
+  <div class="pub-wrap">
+    <div class="pub-header">
+      <div>
+        <div class="pub-logo">ER</div>
+        <div class="pub-logo-sub">Evidence Vault</div>
+      </div>
+      <span class="pub-readonly-badge">READ ONLY</span>
+    </div>
+    <div id="pubNoteContainer"></div>
+    <div class="pub-footer">
+      <div class="pub-footer-logo">ER Shakib</div>
+      <div class="pub-footer-tag">TRUTH · HISTORY · WORLD</div>
+      <div class="pub-divider"></div>
+      <div class="pub-lock-notice">
+        <strong>This is a public evidence share.</strong><br/>
+        You are viewing a read-only note shared via QR code.<br/>
+        The full vault is private and requires authorized access.
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-
-function _isQRView(){
-  return !!(window.location.hash && window.location.hash.startsWith('#note_'));
-}
-function _getNoteIdFromHash(){
-  return window.location.hash.slice(1);
-}
-
+/* ════════════════════════════════════════════════════
+   SECURITY
+════════════════════════════════════════════════════ */
+function _isQRView(){return !!(window.location.hash&&window.location.hash.startsWith('#note_'));}
+function _getNoteIdFromHash(){return window.location.hash.slice(1);}
 
 (function(){
   document.addEventListener('contextmenu',e=>e.preventDefault());
@@ -391,18 +568,17 @@ function _getNoteIdFromHash(){
   });
   let dtOpen=false;
   setInterval(()=>{
-    
     const w=window.outerWidth-window.innerWidth>250;
     const h=window.outerHeight-window.innerHeight>250;
     if((w||h)&&!dtOpen){dtOpen=true;blk();}
     if(!w&&!h)dtOpen=false;
-  },1200);
+  },2000);
   document.addEventListener('dragstart',e=>e.preventDefault());
   window.onbeforeprint=()=>{document.body.style.display='none';};
   window.onafterprint=()=>{document.body.style.display='';};
 })();
 
-function blk(){if(_isQRView&&_isQRView())return;const b=document.getElementById('blockedScreen');if(b)b.style.display='flex';}
+function blk(){if(_isQRView())return;const b=document.getElementById('blockedScreen');if(b)b.style.display='flex';}
 
 (function(){
   const OK=['file://','localhost','127.0.0.1','er-shakib','ershakib','github.io','netlify.app','vercel.app','evidence-sepia'];
@@ -411,22 +587,19 @@ function blk(){if(_isQRView&&_isQRView())return;const b=document.getElementById(
   }
 })();
 
+/* ════════════════════════════════════════════════════
+   CONSTANTS
+════════════════════════════════════════════════════ */
 const _EC=[54,58,50,3,8,9,26,1,36,14,53,11,25,83,89,94,24,38,61,62];
 const _PH='48b146ed1578a439a2ef1976b7f5c875a39f7776fdf6965e00817c0a9c34312c';
 const _K='ERShakibVault2026';
 const _S='ERShakib_salt_2026';
+function _decodeEmail(){return _EC.map((c,i)=>String.fromCharCode(c^_K.charCodeAt(i%_K.length))).join('');}
+async function _hashPin(pin){const data=new TextEncoder().encode(pin+_S);const buf=await crypto.subtle.digest('SHA-256',data);return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
 
-function _decodeEmail(){
-  return _EC.map((c,i)=>String.fromCharCode(c^_K.charCodeAt(i%_K.length))).join('');
-}
-
-async function _hashPin(pin){
-  const data=new TextEncoder().encode(pin+_S);
-  const buf=await crypto.subtle.digest('SHA-256',data);
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-
-
+/* ════════════════════════════════════════════════════
+   FIREBASE INIT (wait for defer)
+════════════════════════════════════════════════════ */
 const _FBC={
   apiKey:"AIzaSyAZovV6g2HlLqk8k5pnfwO6BRP5G7lAP6o",
   authDomain:"content-avid.firebaseapp.com",
@@ -436,10 +609,30 @@ const _FBC={
   messagingSenderId:"758640399094",
   appId:"1:758640399094:web:1a3cac7d9f851cdeef12d7"
 };
-firebase.initializeApp(_FBC);
-const db=firebase.firestore();
-const auth=firebase.auth();
+let db,auth;
+window.addEventListener('load',()=>{
+  try{
+    firebase.initializeApp(_FBC);
+    db=firebase.firestore();
+    auth=firebase.auth();
+    // Enable offline persistence for speed
+    db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
+    auth.onAuthStateChanged(u=>{
+      if(u&&u.email.toLowerCase()===_decodeEmail().toLowerCase()){
+        if(!_isQRView()){
+          document.getElementById('loginScreen').style.display='none';
+          document.getElementById('appContent').style.display='block';
+          loadNotes();
+        }
+      }
+    });
+    if(_isQRView())_routeOnLoad();
+  }catch(e){setSt('FIREBASE ERROR','var(--red)');}
+});
 
+/* ════════════════════════════════════════════════════
+   AUTH
+════════════════════════════════════════════════════ */
 let _la=0,_lo=false,_li=null;
 const _MA=5;
 
@@ -450,14 +643,9 @@ async function doLogin(){
   const errEl=document.getElementById('lErr');
   const btn=document.getElementById('lBtn');
   if(!email||!pass){errEl.textContent='Enter email and password.';return;}
-
   const ownerEmail=_decodeEmail();
-  if(email.toLowerCase()!==ownerEmail.toLowerCase()){
-    _failLogin('Unauthorized email address.');return;
-  }
-
+  if(email.toLowerCase()!==ownerEmail.toLowerCase()){_failLogin('Unauthorized email address.');return;}
   btn.textContent='Verifying...';btn.disabled=true;errEl.textContent='';
-
   auth.signInWithEmailAndPassword(email,pass)
     .then(()=>{
       _la=0;
@@ -471,7 +659,6 @@ async function doLogin(){
       _failLogin(m[err.code]||('Auth failed: '+err.code));
     });
 }
-
 function _failLogin(msg){
   _la++;
   document.getElementById('lBtn').textContent='Enter Vault';
@@ -481,7 +668,6 @@ function _failLogin(msg){
   if(rem>0)document.getElementById('lInfo').textContent=rem+' attempt'+(rem!==1?'s':'')+' remaining';
   if(_la>=_MA)_startLock(60);
 }
-
 function _startLock(sec){
   _lo=true;let t=sec;
   const lb=document.getElementById('lockBox');lb.style.display='block';
@@ -492,7 +678,6 @@ function _startLock(sec){
     if(t<=0){clearInterval(_li);_lo=false;_la=0;lb.style.display='none';document.getElementById('lBtn').disabled=false;document.getElementById('lErr').textContent='';}
   },1000);
 }
-
 function doLogout(){
   auth.signOut().then(()=>{
     document.getElementById('appContent').style.display='none';
@@ -504,39 +689,23 @@ function doLogout(){
   });
 }
 
-auth.onAuthStateChanged(u=>{
-  if(u&&u.email.toLowerCase()===_decodeEmail().toLowerCase()){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('appContent').style.display='block';
-    loadNotes();
-  }
-});
-
-
+/* ════════════════════════════════════════════════════
+   PIN
+════════════════════════════════════════════════════ */
 let _pi='',_pa=0,_pu=false,_pcb=null;
 const _MPA=3;
-
-function requestQR(){
-  if(_pu){doQRDL();return;}
-  _pcb=doQRDL;_pi='';_updDots();
-  document.getElementById('pErr').textContent='';
-  document.getElementById('pAtt').textContent=_MPA+' attempts allowed';
-  document.getElementById('qrPinModal').classList.add('open');
-}
-
+function requestQR(){if(_pu){doQRDL();return;}_pcb=doQRDL;_pi='';_updDots();document.getElementById('pErr').textContent='';document.getElementById('pAtt').textContent=_MPA+' attempts allowed';document.getElementById('qrPinModal').classList.add('open');}
 function closePinModal(){document.getElementById('qrPinModal').classList.remove('open');_pi='';_updDots();}
 function kp(d){if(_pi.length>=4)return;_pi+=d;_updDots();if(_pi.length===4)setTimeout(checkPin,200);}
 function kd(){_pi=_pi.slice(0,-1);_updDots();}
 function _updDots(){for(let i=0;i<4;i++){const d=document.getElementById('d'+i);if(d)d.classList.toggle('filled',i<_pi.length);}}
-
 async function checkPin(){
   if(_pi.length<4){document.getElementById('pErr').textContent='Enter all 4 digits.';return;}
-  // Hash what user entered, compare against stored hash — PIN never compared in plain text
   const inputHash=await _hashPin(_pi);
   if(inputHash===_PH){
     _pu=true;closePinModal();showToast('PIN verified!');
     if(_pcb){_pcb();_pcb=null;}
-  } else {
+  }else{
     _pa++;_pi='';_updDots();
     const card=document.getElementById('pCard');
     card.style.animation='shake .4s ease';
@@ -548,35 +717,188 @@ async function checkPin(){
       setTimeout(()=>closePinModal(),1500);
       const btn=document.getElementById('dlQRBtn');
       if(btn){btn.disabled=true;btn.textContent='QR Locked';}
-    } else {
+    }else{
       document.getElementById('pErr').textContent='Wrong PIN. '+rem+' left.';
       document.getElementById('pAtt').textContent=rem+' attempt'+(rem!==1?'s':'')+' remaining';
     }
   }
 }
 
+/* ════════════════════════════════════════════════════
+   CODEMIRROR EDITOR
+════════════════════════════════════════════════════ */
+let cmEditor=null;
+let editorMode='text'; // 'text' | 'code'
+let currentLang='javascript';
+
+function initCM(){
+  if(cmEditor)return;
+  const cmC=document.getElementById('cmContainer');
+  cmC.innerHTML='';
+  cmEditor=CodeMirror(cmC,{
+    value:'',
+    mode:currentLang,
+    theme:'dracula',
+    lineNumbers:true,
+    matchBrackets:true,
+    autoCloseBrackets:true,
+    lineWrapping:false,
+    indentUnit:2,
+    tabSize:2,
+    indentWithTabs:false,
+    extraKeys:{"Tab":function(cm){cm.replaceSelection("  ");}},
+  });
+  cmEditor.on('change',()=>updateCC());
+  // Handle paste — keep existing clipboard data (CM handles it natively)
+}
+
+function switchMode(mode){
+  editorMode=mode;
+  document.getElementById('togText').classList.toggle('active',mode==='text');
+  document.getElementById('togCode').classList.toggle('active',mode==='code');
+  const textarea=document.getElementById('contentInput');
+  const cmC=document.getElementById('cmContainer');
+  const langRow=document.getElementById('langRow');
+
+  if(mode==='code'){
+    // Transfer textarea content to CM
+    const existing=textarea.value;
+    textarea.style.display='none';
+    langRow.style.display='flex';
+    cmC.style.display='block';
+    // Lazy init CM
+    if(!cmEditor)initCM();
+    else if(window.CodeMirror)cmEditor.refresh();
+    if(existing&&!cmEditor.getValue())cmEditor.setValue(existing);
+    setTimeout(()=>cmEditor&&cmEditor.focus(),50);
+  }else{
+    // Transfer CM content to textarea
+    const cmVal=cmEditor?cmEditor.getValue():'';
+    textarea.style.display='block';
+    langRow.style.display='none';
+    cmC.style.display='none';
+    if(cmVal&&!textarea.value)textarea.value=cmVal;
+    updateCC();
+  }
+}
+
+function setLang(lang,el){
+  currentLang=lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  if(cmEditor){
+    cmEditor.setOption('mode',lang||'text/plain');
+    cmEditor.focus();
+  }
+}
+
+function getContentValue(){
+  if(editorMode==='code'&&cmEditor)return cmEditor.getValue();
+  return document.getElementById('contentInput').value;
+}
+
+function updateCC(){
+  const n=getContentValue().length;
+  document.getElementById('charCt').textContent=n.toLocaleString()+' characters';
+}
+
+/* ════════════════════════════════════════════════════
+   COLORFUL CONTENT RENDERER
+════════════════════════════════════════════════════ */
+function renderColorfulContent(raw,isCode){
+  // Detect if content is code (has code blocks or was saved as code)
+  const codeBlockRx=/```(\w*)\n?([\s\S]*?)```/g;
+  const inlineCodeRx=/`([^`]+)`/g;
+
+  // If whole content is raw code (no backticks but isCode flag)
+  if(isCode&&!codeBlockRx.test(raw)){
+    const escaped=esc(raw);
+    if(window.hljs){
+      const detected=hljs.highlightAuto(raw);
+      return`<pre><code class="hljs ${detected.language||''}" style="-webkit-user-select:text;user-select:text">${detected.value}</code></pre>`;
+    }
+    return`<pre><code style="-webkit-user-select:text;user-select:text">${escaped}</code></pre>`;
+  }
+
+  // Mixed content: process code blocks then inline code then text
+  let html='';
+  let lastIndex=0;
+  codeBlockRx.lastIndex=0;
+  let match;
+  while((match=codeBlockRx.exec(raw))!==null){
+    // Text before code block
+    const before=raw.slice(lastIndex,match.index);
+    if(before)html+=colorizeText(before);
+    // Code block
+    const lang=match[1]||'';
+    const code=match[2];
+    if(window.hljs&&lang){
+      try{
+        const h=hljs.highlight(code,{language:lang,ignoreIllegals:true});
+        html+=`<pre><code class="hljs ${lang}" style="-webkit-user-select:text;user-select:text">${h.value}</code></pre>`;
+      }catch(e){
+        const h=hljs.highlightAuto(code);
+        html+=`<pre><code class="hljs" style="-webkit-user-select:text;user-select:text">${h.value}</code></pre>`;
+      }
+    }else if(window.hljs){
+      const h=hljs.highlightAuto(code);
+      html+=`<pre><code class="hljs" style="-webkit-user-select:text;user-select:text">${h.value}</code></pre>`;
+    }else{
+      html+=`<pre><code style="-webkit-user-select:text;user-select:text">${esc(code)}</code></pre>`;
+    }
+    lastIndex=codeBlockRx.lastIndex;
+  }
+  // Remaining text
+  const rest=raw.slice(lastIndex);
+  if(rest)html+=colorizeText(rest);
+  return html||esc(raw);
+}
+
+function colorizeText(text){
+  // Apply inline code, then colorize URLs, numbers, keywords in plain text
+  let html=esc(text);
+  // inline `code`
+  html=html.replace(/`([^`]+)`/g,'<code>$1</code>');
+  // URLs — make them teal
+  html=html.replace(/(https?:\/\/[^\s<>"]+)/g,'<span style="color:var(--teal);text-decoration:underline;text-underline-offset:2px">$1</span>');
+  // Numbers (standalone)
+  html=html.replace(/\b(\d+(\.\d+)?)\b/g,'<span style="color:var(--syn-number)">$1</span>');
+  // Dates like 2024-01-01
+  html=html.replace(/\b(\d{4}[-\/]\d{2}[-\/]\d{2})\b/g,'<span style="color:var(--syn-string)">$1</span>');
+  // Quoted strings
+  html=html.replace(/"([^"<>]+)"/g,'"<span style="color:var(--syn-string)">$1</span>"');
+  // Hashtags
+  html=html.replace(/(#[\w]+)/g,'<span style="color:var(--purple)">$1</span>');
+  // Line breaks
+  html=html.replace(/\n/g,'<br>');
+  return html;
+}
+
+/* ════════════════════════════════════════════════════
+   STATE & FORM
+════════════════════════════════════════════════════ */
 let allNotes=[],_st='evidence',_sp='medium',sources=[],curFilter='all',curNote=null,pdfFile=null;
 
-function setSt(text,color='var(--teal)'){document.getElementById('statusDot').style.background=color;document.getElementById('statusText').textContent=text;}
+function setSt(text,color='var(--teal)'){
+  document.getElementById('statusDot').style.background=color;
+  document.getElementById('statusText').textContent=text;
+}
 function selTag(t,el){_st=t;document.querySelectorAll('.tag-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
 function setPri(p){_sp=p;['high','medium','low'].forEach(lv=>{const b=document.getElementById('p-'+lv);b.className='pri-btn';if(lv===p)b.classList.add('sel-'+lv);});}
 function addSrc(){const i=document.getElementById('srcInput');const v=i.value.trim();if(!v)return;sources.push(v);i.value='';renderSrc();}
 function removeSrc(i){sources.splice(i,1);renderSrc();}
-function renderSrc(){document.getElementById('srcTags').innerHTML=sources.map((s,i)=>`<span class="src-tag">${s}<button onclick="removeSrc(${i})">×</button></span>`).join('');}
-function updateCC(){const n=document.getElementById('contentInput').value.length;document.getElementById('charCt').textContent=n.toLocaleString()+' characters';}
-
+function renderSrc(){document.getElementById('srcTags').innerHTML=sources.map((s,i)=>`<span class="src-tag">${esc(s)}<button onclick="removeSrc(${i})">×</button></span>`).join('');}
 function handlePDF(){
   const f=document.getElementById('pdfFile').files[0];if(!f)return;
   const kb=f.size/1024,mb=kb/1024,pr=document.getElementById('pdfPrev');
-  if(mb>1024){pr.textContent='⚠ Too large. Max 1024.';pr.style.color='var(--red)';pdfFile=null;return;}
+  if(mb>1024){pr.textContent='⚠ Too large. Max 1MB.';pr.style.color='var(--red)';pdfFile=null;return;}
   pdfFile=f;pr.textContent='✓ '+f.name+' ('+kb.toFixed(1)+'KB)';pr.style.color='var(--teal)';
 }
-
 function readB64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(new Error('Failed'));r.readAsDataURL(file);});}
 
 async function saveNote(){
   const title=document.getElementById('titleInput').value.trim();
-  const content=document.getElementById('contentInput').value.trim();
+  const content=getContentValue().trim();
   if(!title||!content){showToast('Fill title and content');return;}
   const user=auth.currentUser;if(!user){doLogout();return;}
   const btn=document.getElementById('saveBtn');
@@ -585,7 +907,11 @@ async function saveNote(){
     const id='note_'+Date.now();
     let pdf64=null;
     if(pdfFile){setSt('Reading PDF...','var(--gold)');pdf64=await readB64(pdfFile);}
-    const note={id,title,content,tag:_st,priority:_sp,sources:[...sources],pdfBase64:pdf64||null,pdfName:pdfFile?pdfFile.name:null,createdAt:firebase.firestore.FieldValue.serverTimestamp(),createdAtLocal:new Date().toISOString(),ownerUid:user.uid};
+    const note={id,title,content,tag:_st,priority:_sp,sources:[...sources],
+      isCode:editorMode==='code',codeLang:editorMode==='code'?currentLang:'',
+      pdfBase64:pdf64||null,pdfName:pdfFile?pdfFile.name:null,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+      createdAtLocal:new Date().toISOString(),ownerUid:user.uid};
     setSt('Saving...','var(--gold)');
     await db.collection('er_shakib_vault').doc(id).set(note);
     setSt('CONNECTED — SECURED','var(--teal)');showToast('Saved!');clearForm();loadNotes();
@@ -593,8 +919,12 @@ async function saveNote(){
   btn.innerHTML='Save to Vault';btn.disabled=false;
 }
 
+/* ════════════════════════════════════════════════════
+   LOAD + RENDER (optimised)
+════════════════════════════════════════════════════ */
 async function loadNotes(){
   const user=auth.currentUser;if(!user)return;
+  setSt('LOADING...','var(--gold)');
   try{
     const snap=await db.collection('er_shakib_vault').where('ownerUid','==',user.uid).orderBy('createdAt','desc').get();
     allNotes=snap.docs.map(d=>({id:d.id,...d.data()}));
@@ -614,19 +944,30 @@ function updateStats(){
   document.getElementById('totalPDFs').textContent=allNotes.filter(n=>n.pdfBase64).length;
 }
 
+// Debounce for search
+let _rt;
+function debounceRender(){clearTimeout(_rt);_rt=setTimeout(renderNotes,120);}
+
 function renderNotes(){
   const s=document.getElementById('searchInput').value.toLowerCase();
   let notes=allNotes.filter(n=>{
-    if(curFilter==='all')return true;if(curFilter==='high')return n.priority==='high';return n.tag===curFilter;
+    if(curFilter==='all')return true;
+    if(curFilter==='high')return n.priority==='high';
+    return n.tag===curFilter;
   }).filter(n=>!s||n.title?.toLowerCase().includes(s)||n.content?.toLowerCase().includes(s)||n.sources?.some(x=>x.toLowerCase().includes(s)));
   const list=document.getElementById('notesList');
   if(!notes.length){list.innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No notes found.</p></div>';return;}
-  list.innerHTML=notes.map(n=>{
+
+  // Build HTML in one string for fast DOM update
+  const html=notes.map((n,idx)=>{
     const date=n.createdAtLocal?new Date(n.createdAtLocal).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'—';
-    return`<div class="note-card priority-${n.priority}" onclick="viewNote('${n.id}')">
+    const delay=Math.min(idx*30,300);
+    const preview=n.content?n.content.replace(/```[\s\S]*?```/g,'[code]').replace(/`[^`]+`/g,'[code]').slice(0,120):'';
+    return`<div class="note-card priority-${n.priority}" style="animation-delay:${delay}ms" onclick="viewNote('${n.id}')">
       <div class="note-card-hd"><div class="note-card-title">${esc(n.title)}</div><span class="note-card-tag tag-${n.tag}">${n.tag}</span></div>
-      <div class="note-card-body">${esc(n.content)}</div>
-      ${n.pdfBase64?`<div class="has-pdf">PDF attached</div>`:''}
+      <div class="note-card-body">${esc(preview)}</div>
+      ${n.isCode?`<div class="has-code">⌨ ${esc(n.codeLang||'code')}</div>`:''}
+      ${n.pdfBase64?`<div class="has-pdf">📎 PDF attached</div>`:''}
       <div class="note-card-ftr"><span class="note-card-date">${date}</span>
         <div class="note-card-acts" onclick="event.stopPropagation()">
           <button class="icon-btn" onclick="viewNote('${n.id}')">View</button>
@@ -636,16 +977,42 @@ function renderNotes(){
       </div>
     </div>`;
   }).join('');
+  list.innerHTML=html;
 }
 
+/* ════════════════════════════════════════════════════
+   VIEW NOTE MODAL
+════════════════════════════════════════════════════ */
 function viewNote(id){
   const note=allNotes.find(n=>n.id===id);if(!note)return;curNote=note;
   document.getElementById('modalTitle').textContent=note.title;
   const date=note.createdAtLocal?new Date(note.createdAtLocal).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric',weekday:'long'}):'—';
-  document.getElementById('modalMeta').innerHTML=`<span class="meta-badge tag-${note.tag}">${note.tag}</span><span class="meta-badge" style="background:var(--bg3);color:var(--text2);border:1px solid var(--border)">${note.priority} priority</span><span class="meta-badge" style="background:var(--bg3);color:var(--text3);font-family:var(--font-m);font-size:10px">${date}</span>`;
-  document.getElementById('modalContent').textContent=note.content;
+  document.getElementById('modalMeta').innerHTML=
+    `<span class="meta-badge tag-${note.tag}">${note.tag}</span>`+
+    `<span class="meta-badge" style="background:var(--bg3);color:var(--text2);border:1px solid var(--border)">${note.priority} priority</span>`+
+    (note.isCode?`<span class="meta-badge" style="background:rgba(80,250,123,.1);color:var(--syn-func);border:1px solid rgba(80,250,123,.3)">⌨ ${note.codeLang||'code'}</span>`:'')+ 
+    `<span class="meta-badge" style="background:var(--bg3);color:var(--text3);font-family:var(--font-m);font-size:10px">${date}</span>`;
+
+  // Render colorful content
+  const contentEl=document.getElementById('modalContent');
+  contentEl.innerHTML=renderColorfulContent(note.content||'',note.isCode);
+  contentEl.style.userSelect='text';
+  contentEl.style.webkitUserSelect='text';
+  // Re-run hljs on any injected code blocks
+  if(window.hljs){
+    contentEl.querySelectorAll('pre code').forEach(b=>{
+      if(!b.classList.contains('hljs'))hljs.highlightElement(b);
+    });
+  }
+
   document.getElementById('modalSrcs').innerHTML=note.sources?.length?note.sources.map(s=>`<span class="modal-src-pill">${esc(s)}</span>`).join(''):'<span style="color:var(--text3);font-size:12px">No sources</span>';
-  document.getElementById('modalPDF').innerHTML=note.pdfBase64?`<div style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap"><a href="${note.pdfBase64}" download="${esc(note.pdfName||'evidence.pdf')}" style="display:inline-flex;align-items:center;gap:8px;background:rgba(226,75,74,.1);border:1px solid rgba(226,75,74,.3);border-radius:8px;padding:10px 16px;color:var(--red);text-decoration:none;font-size:13px;font-weight:500">Download: ${esc(note.pdfName||'evidence.pdf')}</a><a href="${note.pdfBase64}" target="_blank" style="display:inline-flex;align-items:center;background:rgba(94,92,86,.15);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:var(--text2);text-decoration:none;font-size:13px">Open</a></div>`:'';
+  document.getElementById('modalPDF').innerHTML=note.pdfBase64
+    ?`<div style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap">
+        <a href="${note.pdfBase64}" download="${esc(note.pdfName||'evidence.pdf')}" style="display:inline-flex;align-items:center;gap:8px;background:rgba(226,75,74,.1);border:1px solid rgba(226,75,74,.3);border-radius:8px;padding:10px 16px;color:var(--red);text-decoration:none;font-size:13px;font-weight:500">⬇ Download: ${esc(note.pdfName||'evidence.pdf')}</a>
+        <a href="${note.pdfBase64}" target="_blank" style="display:inline-flex;align-items:center;background:rgba(94,92,86,.15);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:var(--text2);text-decoration:none;font-size:13px">Open PDF</a>
+      </div>`:'';
+
+  // QR
   const qrc=document.getElementById('qrcode-container');qrc.innerHTML='';
   const url=location.href.split('#')[0]+'#'+note.id;
   document.getElementById('qrUrl').textContent=url;
@@ -657,6 +1024,9 @@ function viewNote(id){
 
 function closeModal(){document.getElementById('viewModal').classList.remove('open');curNote=null;}
 
+/* ════════════════════════════════════════════════════
+   QR DOWNLOAD
+════════════════════════════════════════════════════ */
 function doQRDL(){
   const canvas=document.querySelector('#qrcode-container canvas');if(!canvas){showToast('QR not ready');return;}
   const off=document.createElement('canvas');off.width=400;off.height=520;
@@ -681,6 +1051,9 @@ function doQRDL(){
   showToast('QR downloaded!');
 }
 
+/* ════════════════════════════════════════════════════
+   PDF EXPORT
+════════════════════════════════════════════════════ */
 function dlNotePDF(){if(curNote)genPDF([curNote],`ER_Shakib_${curNote.id}.pdf`);}
 function dlSinglePDF(id){const n=allNotes.find(n=>n.id===id);if(n)genPDF([n],`ER_Shakib_${n.title.replace(/[^a-z0-9]/gi,'_').substring(0,30)}.pdf`);}
 function exportAllPDF(){if(!allNotes.length){showToast('No notes');return;}genPDF(allNotes,'ER_Shakib_Vault_ALL.pdf');}
@@ -692,9 +1065,6 @@ function genPDF(notes,filename){
   const gold=[239,159,39],dark=[17,17,16],db2=[28,28,25],lt=[240,237,228],mt=[160,157,148],dt=[94,92,86],teal=[29,158,117],red=[226,75,74];
   const ap=()=>{
     doc.setFillColor(...dark);doc.rect(0,0,W,H,'F');
-    doc.setDrawColor(42,42,40);doc.setLineWidth(.2);
-    for(let x=0;x<W;x+=8)doc.line(x,0,x,H);
-    for(let y=0;y<H;y+=8)doc.line(0,y,W,y);
     doc.setFillColor(...db2);doc.rect(0,0,W,14,'F');
     doc.setDrawColor(...gold);doc.setLineWidth(.5);doc.line(0,14,W,14);
     doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(...gold);doc.text('ER SHAKIB',lm,9.5);
@@ -707,7 +1077,6 @@ function genPDF(notes,filename){
   };
   ap();
   doc.setFont('times','bold');doc.setFontSize(80);doc.setTextColor(...gold);doc.text('ER',W/2,120,{align:'center'});
-  doc.setDrawColor(...gold);doc.setLineWidth(.8);doc.setGState(new doc.GState({opacity:.5}));doc.line(lm+20,132,W-rm-20,132);doc.setGState(new doc.GState({opacity:1}));
   doc.setFont('times','normal');doc.setFontSize(22);doc.setTextColor(...lt);doc.text('SHAKIB',W/2,148,{align:'center'});
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(...mt);doc.text('TRUTH · HISTORY · WORLD',W/2,160,{align:'center'});
   doc.setFillColor(...gold);doc.roundedRect(lm+10,178,cw-20,22,3,3,'F');
@@ -725,10 +1094,11 @@ function genPDF(notes,filename){
     doc.setFont('times','bold');doc.setFontSize(18);doc.setTextColor(...lt);
     const tl=doc.splitTextToSize(note.title||'Untitled',cw);doc.text(tl,lm,y);y+=tl.length*8+4;
     doc.setDrawColor(...gold);doc.setLineWidth(.5);doc.setGState(new doc.GState({opacity:.5}));doc.line(lm,y,W-rm,y);doc.setGState(new doc.GState({opacity:1}));y+=8;
-    doc.setFont('courier','normal');doc.setFontSize(9);doc.setTextColor(...mt);doc.text('CONTENT',lm,y);
-    doc.setDrawColor(...dt);doc.setLineWidth(.2);doc.line(lm+18,y-1,W-rm,y-1);y+=7;
-    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(...lt);
-    doc.splitTextToSize(note.content||'',cw).forEach(line=>{if(y>H-bm-20){doc.addPage();ap();y=tm+8;}doc.text(line,lm,y);y+=5.5;});y+=8;
+    doc.setFont('courier','normal');doc.setFontSize(9);doc.setTextColor(...mt);doc.text(note.isCode?`CODE (${note.codeLang||''})`:'CONTENT',lm,y);
+    doc.setDrawColor(...dt);doc.setLineWidth(.2);doc.line(lm+20,y-1,W-rm,y-1);y+=7;
+    doc.setFont(note.isCode?'courier':'helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(...lt);
+    const stripped=(note.content||'').replace(/```[\s\S]*?```/g,'[code block]').replace(/`([^`]+)`/g,'$1');
+    doc.splitTextToSize(stripped,cw).forEach(line=>{if(y>H-bm-20){doc.addPage();ap();y=tm+8;}doc.text(line,lm,y);y+=5.5;});y+=8;
     if(note.sources?.length){
       if(y>H-bm-40){doc.addPage();ap();y=tm+8;}
       doc.setFont('courier','normal');doc.setFontSize(9);doc.setTextColor(...mt);doc.text('VERIFIED SOURCES',lm,y);
@@ -741,12 +1111,14 @@ function genPDF(notes,filename){
   doc.save(filename);showToast('PDF downloaded!');
 }
 
+/* ════════════════════════════════════════════════════
+   UTILITIES
+════════════════════════════════════════════════════ */
 async function delNote(id){
   if(!confirm('Delete permanently?'))return;
   try{await db.collection('er_shakib_vault').doc(id).delete();showToast('Deleted');loadNotes();}
   catch(e){showToast('Error: '+e.message);}
 }
-
 function setF(f,el){curFilter=f;document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderNotes();}
 function copyLink(){navigator.clipboard.writeText(document.getElementById('qrUrl').textContent).then(()=>showToast('Link copied!'));}
 
@@ -754,184 +1126,109 @@ let _tt;
 function showToast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
 
 function clearForm(){
-  ['titleInput','contentInput','srcInput'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('pdfFile').value='';document.getElementById('pdfPrev').textContent='';
+  ['titleInput','srcInput'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('contentInput').value='';
+  if(cmEditor)cmEditor.setValue('');
+  document.getElementById('pdfFile').value='';
+  document.getElementById('pdfPrev').textContent='';
   sources=[];pdfFile=null;renderSrc();updateCC();
+  // Reset to text mode
+  if(editorMode==='code')switchMode('text');
 }
 
 function esc(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 document.getElementById('viewModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-
-
-
+/* ════════════════════════════════════════════════════
+   PUBLIC QR VIEW
+════════════════════════════════════════════════════ */
 async function _loadPublicNote(noteId){
-  const pv = document.getElementById('publicView');
-  const container = document.getElementById('pubNoteContainer');
+  const pv=document.getElementById('publicView');
+  const container=document.getElementById('pubNoteContainer');
+  try{document.getElementById('loginScreen').style.display='none';}catch(e){}
+  try{document.getElementById('appContent').style.display='none';}catch(e){}
+  try{document.getElementById('blockedScreen').style.display='none';}catch(e){}
+  pv.style.display='block';pv.style.visibility='visible';pv.style.opacity='1';
+  document.body.style.background='#0d0d0b';
 
-  try{ document.getElementById('loginScreen').style.display='none'; }catch(e){}
-  try{ document.getElementById('appContent').style.display='none'; }catch(e){}
-  try{ document.getElementById('blockedScreen').style.display='none'; }catch(e){}
-  pv.style.display = 'block';
-  pv.style.visibility = 'visible';
-  pv.style.opacity = '1';
-  document.body.style.background = '#0d0d0b';
+  container.innerHTML=`<div style="text-align:center;padding:80px 24px"><div style="font-family:var(--font-m);font-size:13px;color:var(--gold);letter-spacing:2px;margin-bottom:12px">LOADING NOTE...</div><div style="width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto"></div></div>`;
 
-  container.innerHTML = `<div style="text-align:center;padding:80px 24px;">
-    <div style="font-family:'DM Mono',monospace;font-size:13px;color:#EF9F27;letter-spacing:2px;margin-bottom:12px">LOADING NOTE...</div>
-    <div style="width:32px;height:32px;border:2px solid #2e2e2a;border-top-color:#EF9F27;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto"></div>
-  </div>`;
-
-  try {
-    const docSnap = await db.collection('er_shakib_vault').doc(noteId).get();
-
+  try{
+    const docSnap=await db.collection('er_shakib_vault').doc(noteId).get();
     if(!docSnap.exists){
-      container.innerHTML = `
-        <div class="pub-not-found">
-          <div class="pub-not-found-icon">🔍</div>
-          <div class="pub-not-found-title">Note not found</div>
-          <div class="pub-not-found-msg">This QR code may have expired or the note may have been deleted.</div>
-        </div>`;
+      container.innerHTML=`<div class="pub-not-found"><div class="pub-not-found-icon">🔍</div><div class="pub-not-found-title">Note not found</div><div class="pub-not-found-msg">This QR code may have expired or the note may have been deleted.</div></div>`;
       return;
     }
-
-    const note = docSnap.data();
-
-    // Tag color map
-    const tagColors = {
-      history:'#EF9F27',geopolitics:'#7F77DD',conflict:'#D85A30',
-      social:'#1D9E75',evidence:'#639922',nuclear:'#E24B4A'
-    };
-    const tagBg = {
-      history:'rgba(239,159,39,.12)',geopolitics:'rgba(127,119,221,.12)',
-      conflict:'rgba(216,90,48,.12)',social:'rgba(29,158,117,.12)',
-      evidence:'rgba(99,153,34,.12)',nuclear:'rgba(226,75,74,.12)'
-    };
-    const tc = tagColors[note.tag] || '#EF9F27';
-    const tbg = tagBg[note.tag] || 'rgba(239,159,39,.12)';
-
-    const priLabels = {high:'High Priority',medium:'Medium Priority',low:'Low Priority'};
-    const date = note.createdAtLocal
-      ? new Date(note.createdAtLocal).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric',weekday:'long'})
-      : '';
-
-    // Sources HTML
-    const sourcesHtml = note.sources?.length
-      ? `<div class="pub-sources-title">VERIFIED SOURCES</div>
-         <div class="pub-sources">
-           ${note.sources.map(s=>`<span class="pub-src-pill">${_esc(s)}</span>`).join('')}
-         </div>`
-      : '';
-
-    // PDF button HTML
-    const pdfHtml = note.pdfBase64
-      ? `<a href="${note.pdfBase64}" download="${_esc(note.pdfName||'evidence.pdf')}" class="pub-pdf-btn">
-           Download PDF Evidence: ${_esc(note.pdfName||'evidence.pdf')}
-         </a>`
-      : '';
-
-    container.innerHTML = `
+    const note=docSnap.data();
+    const tagColors={history:'#EF9F27',geopolitics:'#7F77DD',conflict:'#D85A30',social:'#1D9E75',evidence:'#639922',nuclear:'#E24B4A'};
+    const tagBg={history:'rgba(239,159,39,.12)',geopolitics:'rgba(127,119,221,.12)',conflict:'rgba(216,90,48,.12)',social:'rgba(29,158,117,.12)',evidence:'rgba(99,153,34,.12)',nuclear:'rgba(226,75,74,.12)'};
+    const tc=tagColors[note.tag]||'#EF9F27';
+    const tbg=tagBg[note.tag]||'rgba(239,159,39,.12)';
+    const priLabels={high:'High Priority',medium:'Medium Priority',low:'Low Priority'};
+    const date=note.createdAtLocal?new Date(note.createdAtLocal).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric',weekday:'long'}):'';
+    const sourcesHtml=note.sources?.length?`<div class="pub-sources-title">VERIFIED SOURCES</div><div class="pub-sources">${note.sources.map(s=>`<span class="pub-src-pill">${_esc(s)}</span>`).join('')}</div>`:'';
+    const pdfHtml=note.pdfBase64?`<a href="${note.pdfBase64}" download="${_esc(note.pdfName||'evidence.pdf')}" class="pub-pdf-btn">⬇ Download PDF: ${_esc(note.pdfName||'evidence.pdf')}</a>`:'';
+    const colorContent=renderColorfulContent(note.content||'',note.isCode);
+    container.innerHTML=`
       <div class="pub-card">
-        <div class="pub-card-top" style="padding:12px 20px;">
+        <div class="pub-card-top">
           <span class="pub-tag-badge" style="background:${tbg};color:${tc}">${note.tag||'evidence'}</span>
           <span class="pub-pri-badge">${priLabels[note.priority]||'Medium Priority'}</span>
+          ${note.isCode?`<span style="background:rgba(80,250,123,.1);color:#50fa7b;border:1px solid rgba(80,250,123,.3);border-radius:100px;padding:2px 10px;font-size:10px;font-family:var(--font-m)">⌨ ${_esc(note.codeLang||'code')}</span>`:''}
           <span class="pub-date">${date}</span>
         </div>
         <div class="pub-title">${_esc(note.title||'Untitled')}</div>
-        <div class="pub-content">${_esc(note.content||'')}</div>
-        ${sourcesHtml}
-        ${pdfHtml}
+        <div class="pub-content" style="-webkit-user-select:text;user-select:text">${colorContent}</div>
+        ${sourcesHtml}${pdfHtml}
       </div>`;
-
-  } catch(err) {
-    // Make sure view is visible even on error
-    const pvEl = document.getElementById('publicView');
-    if(pvEl){ pvEl.style.display='block'; pvEl.style.visibility='visible'; }
-    const errMsg = err.code === 'permission-denied'
-      ? 'Access denied. Please check Firestore security rules allow public reads.'
-      : err.message;
-    container.innerHTML = `
-      <div class="pub-not-found">
-        <div class="pub-not-found-icon">⚠️</div>
-        <div class="pub-not-found-title">Could not load note</div>
-        <div class="pub-not-found-msg" style="-webkit-user-select:text;user-select:text">${_esc(errMsg)}</div>
-      </div>`;
-  }
-}
-
-function _esc(s){
-  if(!s)return'';
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ── ENTRY POINT: decide public view vs login ───────────────────────────────
-(function _routeOnLoad(){
-  if(_isQRView()){
-    const noteId = _getNoteIdFromHash();
-
-    // Show a loading screen immediately — do NOT wait for Firebase
-    const loginEl = document.getElementById('loginScreen');
-    const appEl   = document.getElementById('appContent');
-    const blkEl   = document.getElementById('blockedScreen');
-    const pvEl    = document.getElementById('publicView');
-
-    if(loginEl) loginEl.style.display = 'none';
-    if(appEl)   appEl.style.display   = 'none';
-    if(blkEl)   blkEl.style.display   = 'none';
-    if(pvEl){
-      pvEl.style.display     = 'block';
-      pvEl.style.visibility  = 'visible';
-      pvEl.style.opacity     = '1';
+    // Run hljs on public view code blocks
+    if(window.hljs){
+      document.querySelectorAll('#pubNoteContainer pre code').forEach(b=>{if(!b.classList.contains('hljs'))hljs.highlightElement(b);});
     }
-    document.body.style.background = '#0d0d0b';
-
-    // Wait for Firebase db to be ready (it's synchronous after initializeApp)
-    // but use a short timeout as safety net for slow CDN loads
-    let tries = 0;
-    const waitForFirebase = setInterval(()=>{
-      tries++;
-      if(typeof db !== 'undefined' && typeof firebase !== 'undefined'){
-        clearInterval(waitForFirebase);
-        _loadPublicNote(noteId);
-      } else if(tries > 100){
-        // 5 seconds passed — Firebase CDN failed to load
-        clearInterval(waitForFirebase);
-        const c = document.getElementById('pubNoteContainer');
-        if(c) c.innerHTML = '<div class="pub-not-found"><div class="pub-not-found-icon">⚠️</div><div class="pub-not-found-title">Connection failed</div><div class="pub-not-found-msg">Could not connect to database. Check your internet connection and try again.</div></div>';
-      }
-    }, 50);
+  }catch(err){
+    const pvEl=document.getElementById('publicView');
+    if(pvEl){pvEl.style.display='block';pvEl.style.visibility='visible';}
+    container.innerHTML=`<div class="pub-not-found"><div class="pub-not-found-icon">⚠️</div><div class="pub-not-found-title">Could not load note</div><div class="pub-not-found-msg" style="-webkit-user-select:text;user-select:text">${_esc(err.message)}</div></div>`;
   }
-  // No hash = normal vault login flow
-})();
+}
 
-// Init
-setPri('medium');setSt('CONNECTING...','var(--gold)');
+function _esc(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/* ════════════════════════════════════════════════════
+   ROUTING
+════════════════════════════════════════════════════ */
+function _routeOnLoad(){
+  const noteId=_getNoteIdFromHash();
+  const loginEl=document.getElementById('loginScreen');
+  const appEl=document.getElementById('appContent');
+  const blkEl=document.getElementById('blockedScreen');
+  const pvEl=document.getElementById('publicView');
+  if(loginEl)loginEl.style.display='none';
+  if(appEl)appEl.style.display='none';
+  if(blkEl)blkEl.style.display='none';
+  if(pvEl){pvEl.style.display='block';pvEl.style.visibility='visible';pvEl.style.opacity='1';}
+  document.body.style.background='#0d0d0b';
+  // Wait for Firebase
+  let tries=0;
+  const waitForFirebase=setInterval(()=>{
+    tries++;
+    if(typeof db!=='undefined'&&typeof firebase!=='undefined'){
+      clearInterval(waitForFirebase);
+      _loadPublicNote(noteId);
+    }else if(tries>100){
+      clearInterval(waitForFirebase);
+      const c=document.getElementById('pubNoteContainer');
+      if(c)c.innerHTML='<div class="pub-not-found"><div class="pub-not-found-icon">⚠️</div><div class="pub-not-found-title">Connection failed</div><div class="pub-not-found-msg">Could not connect to database. Check your internet connection.</div></div>';
+    }
+  },50);
+}
+
+if(_isQRView())_routeOnLoad();
+
+// INIT
+setPri('medium');
+setSt('CONNECTING...','var(--gold)');
 </script>
-
-<!-- PUBLIC QR VIEW — shown when URL has #note_xxx hash -->
-<div id="publicView">
-  <div class="pub-wrap">
-    <div class="pub-header">
-      <div>
-        <div class="pub-logo">ER</div>
-        <div class="pub-logo-sub">Evidence Vault</div>
-      </div>
-      <span class="pub-readonly-badge">READ ONLY</span>
-    </div>
-    <div id="pubNoteContainer"></div>
-    <div class="pub-footer">
-      <div class="pub-footer-logo">ER Shakib</div>
-      <div class="pub-footer-tag">TRUTH · HISTORY · WORLD</div>
-      <div class="pub-divider"></div>
-      <div class="pub-lock-notice">
-        <strong>This is a public evidence share.</strong><br/>
-        You are viewing a read-only note shared via QR code.<br/>
-        The full vault is private and requires authorized access.
-      </div>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
